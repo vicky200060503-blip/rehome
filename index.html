@@ -249,7 +249,7 @@ return{
 "維修":["已送出申請","店員複核","維修或補裝配件","重新估價並通知"],
 "捐贈":["已送出申請","安排收件","完成捐贈或回收"]}[S.route];
 }
-function kgt(){return S.size===40?"40 cm 款的官方重量尚待查證，暫不顯示避免廢棄量。":"每再用 1 件，約避免 "+P.kg+" kg 廢棄（本體淨重，IKEA 台灣官網）。"}
+function kgt(){return "每再用 1 件，約避免 "+(S.size===40?24.49:P.kg)+" kg 廢棄（本體淨重，IKEA 台灣官網）。"}
 function renderProg(){
 if(!S.sent){$("#pg").innerHTML="<p class=\"mut\">還沒有送出申請。完成估價與去向選擇後，這裡會顯示進度。</p>";$("#tl").innerHTML="";$("#adv").hidden=true;$("#eco").hidden=true;return}
 var L=line(),pay=S.route==="回購"||S.route==="轉售";
