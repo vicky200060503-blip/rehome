@@ -1,0 +1,373 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>再居 ReHome｜二手 BILLY 估價與試擺原型</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap">
+<style>
+:root{--bg:#f3f5f8;--card:#fff;--ink:#13233f;--mut:#566277;--line:#d3dae4;--acc:#123a6b;--on:#fff;--soft:#e7edf6;--wood:#d9b98a;--wood2:#b8935f;--warn:#7a3d00;--warnbg:#fff0d9;--ok:#1d6b4a;--okbg:#e3f3ea;--tag:#f5c542;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0d141f;--card:#152030;--ink:#e8eef7;--mut:#9fb0c7;--line:#2a3a52;--acc:#8db7ee;--on:#0d141f;--soft:#1c2b42;--wood:#c9a572;--wood2:#8f6f43;--warn:#ffcf99;--warnbg:#3a2a14;--ok:#8fd7b2;--okbg:#17332a;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0d141f;--card:#152030;--ink:#e8eef7;--mut:#9fb0c7;--line:#2a3a52;--acc:#8db7ee;--on:#0d141f;--soft:#1c2b42;--wood:#c9a572;--wood2:#8f6f43;--warn:#ffcf99;--warnbg:#3a2a14;--ok:#8fd7b2;--okbg:#17332a;color-scheme:dark}
+*{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.65 "Noto Sans TC","Microsoft JhengHei","PingFang TC",sans-serif}
+main{max-width:780px;margin:0 auto;padding:20px 16px 56px}
+h1{font-size:1.7rem;font-weight:900;margin:0;letter-spacing:.04em}
+h2{font-size:1.08rem;margin:0 0 10px}
+.sub{color:var(--mut);margin:2px 0 14px;font-size:.93rem}
+.badge{background:var(--warnbg);color:var(--warn);border-radius:4px;padding:1px 8px;font-size:.78rem;margin-left:8px;vertical-align:middle;font-weight:500}
+.role{display:grid;grid-template-columns:1fr 1fr;gap:0;border:2px solid var(--acc);border-radius:10px;overflow:hidden;margin:10px 0 16px}
+.role button{font:inherit;font-weight:700;padding:11px 8px;border:0;background:none;color:var(--acc);cursor:pointer;line-height:1.35}
+.role button small{display:block;font-weight:400;font-size:.78rem;opacity:.85}
+.role button[aria-selected="true"]{background:var(--acc);color:var(--on)}
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:0 0 14px;padding:0;list-style:none}
+.steps button{width:100%;font:inherit;font-size:.86rem;font-weight:500;color:var(--mut);background:none;border:0;border-top:4px solid var(--line);padding:6px 2px 0;text-align:left;cursor:pointer}
+.steps button[aria-current="step"]{color:var(--ink);border-color:var(--acc);font-weight:700}
+.steps button.done{border-color:var(--ok)}
+button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px;margin-bottom:14px}
+.item{display:flex;gap:12px;align-items:center}
+.shelf{flex:none;width:40px;height:92px;background:var(--wood);border:2px solid var(--wood2);border-radius:2px;background-image:repeating-linear-gradient(to bottom,transparent 0 14px,var(--wood2) 14px 16px)}
+.chips{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+.chips label,.opt{position:relative;border:1.5px solid var(--line);border-radius:8px;padding:9px 11px;cursor:pointer;display:block;line-height:1.4}
+.chips label small,.opt small{display:block;color:var(--mut);font-size:.8rem}
+.chips input,.opt input{position:absolute;opacity:0}
+.chips label:has(input:checked),.opt:has(input:checked){border-color:var(--acc);background:var(--soft)}
+.chips label:has(input:focus-visible),.opt:has(input:focus-visible){outline:3px solid var(--acc)}
+.opt.off{opacity:.5;cursor:not-allowed;background:none}
+.opt b{display:block}
+.opt .amt{display:block;font-size:1.35rem;font-weight:900;font-variant-numeric:tabular-nums;line-height:1.3}
+.row{display:flex;flex-wrap:wrap;gap:8px 18px;align-items:center;margin-top:10px}
+.row label{display:flex;gap:6px;align-items:center}
+input[type=number],select{font:inherit;padding:6px 8px;border:1.5px solid var(--line);border-radius:6px;background:var(--card);color:var(--ink);width:88px}
+select{width:auto}
+.btn{font:inherit;font-weight:700;padding:10px 18px;border-radius:8px;border:1.5px solid var(--acc);background:var(--acc);color:var(--on);cursor:pointer}
+.btn.ghost{background:none;color:var(--acc)}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.tag{position:relative;background:var(--tag);color:#2b2100;padding:18px 20px 16px 56px;clip-path:polygon(0 50%,26px 0,100% 0,100% 100%,26px 100%);margin-bottom:12px}
+.tag::before{content:"";position:absolute;left:30px;top:50%;width:12px;height:12px;margin-top:-6px;border-radius:50%;background:var(--card)}
+.tag .big{font-size:2.8rem;font-weight:900;line-height:1.1;font-variant-numeric:tabular-nums}
+.tag .rg{font-size:.9rem}
+.bar{height:12px;background:var(--soft);border-radius:6px;overflow:hidden;margin:6px 0 4px}
+.bar i{display:block;height:100%;background:var(--acc);width:0;transition:width .3s}
+table{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums;font-size:.95rem}
+td{padding:6px 0;border-bottom:1px solid var(--line)}td:last-child{text-align:right}
+tr.t td{font-weight:700;border-bottom:0}
+.note{background:var(--warnbg);color:var(--warn);border-radius:8px;padding:9px 12px;font-size:.9rem;margin-top:10px}
+.good{background:var(--okbg);color:var(--ok)}
+.mut{color:var(--mut);font-size:.86rem}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.guide{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:10px 0;padding:0;list-style:none;font-size:.8rem;text-align:center}
+.guide li{background:var(--soft);border-radius:6px;padding:6px 2px;line-height:1.3}
+.tl{list-style:none;margin:10px 0 0;padding:0}
+.tl li{position:relative;padding:0 0 14px 28px;color:var(--mut)}
+.tl li::before{content:"";position:absolute;left:3px;top:6px;width:12px;height:12px;border-radius:50%;border:2px solid var(--line);background:var(--card)}
+.tl li::after{content:"";position:absolute;left:8px;top:20px;bottom:-4px;width:2px;background:var(--line)}
+.tl li:last-child::after{display:none}
+.tl li.d{color:var(--ink)}.tl li.d::before{background:var(--ok);border-color:var(--ok)}
+.tl li.c{color:var(--ink);font-weight:700}.tl li.c::before{border-color:var(--acc);background:var(--acc)}
+canvas{width:100%;display:block;border:1px solid var(--line);border-radius:8px;touch-action:pan-y;cursor:grab}
+[hidden]{display:none!important}
+@media(max-width:480px){.two{grid-template-columns:1fr}.tag .big{font-size:2.3rem}.guide{grid-template-columns:repeat(2,1fr)}}
+@media(prefers-reduced-motion:reduce){.bar i{transition:none}}
+</style>
+</head>
+<body>
+<main>
+<h1>再居 ReHome<span class="badge">示範原型</span></h1>
+<p class="sub">二手 IKEA 家具：拍照估價、先試擺再購買、回饋循環。目前以 BILLY 書櫃測試；價格與係數為示範假設，並非 IKEA 官方服務。</p>
+
+<div class="role" role="tablist" aria-label="使用者身分">
+<button role="tab" id="rs" aria-selected="true">我要賣家具<small>估價、選去向、領回饋</small></button>
+<button role="tab" id="rb" aria-selected="false">我要買二手<small>看物況、先試擺</small></button>
+</div>
+
+<!-- 賣家 -->
+<section id="seller">
+<ol class="steps" id="stp"></ol>
+
+<div id="s0">
+<div class="card"><div class="item"><div class="shelf" id="shf" aria-hidden="true"></div><div><b id="itn">IKEA BILLY 書櫃 80×28×202 cm（白色）</b><div class="mut" id="itp"></div></div></div><div class="chips" role="radiogroup" aria-label="尺寸" style="margin-top:12px"><label><input type="radio" name="sz" value="80" checked>BILLY 80 cm<small>80×28×202</small></label><label><input type="radio" name="sz" value="40">BILLY 40 cm<small>40×28×202</small></label></div><p class="mut" style="margin:10px 0 0">其他款式（如 HEMNES、KALLAX）的二手比例與 BILLY 差異大，需各自校正，目前尚未支援。</p></div>
+
+<div class="card">
+<h2>上傳照片</h2>
+<div id="phbox">
+<ul class="guide"><li>正面全景</li><li>層板側面</li><li>背板</li><li>頂端固定件</li></ul>
+<input type="file" id="ph" accept="image/*" aria-label="上傳書櫃照片">
+<img id="pv" alt="" hidden style="max-width:140px;border-radius:6px;margin-top:8px">
+<div class="row"><button class="btn ghost" id="ai" type="button">示範：帶入 AI 初判結果</button></div>
+<div class="note good" id="aiw" hidden></div>
+<p class="mut" id="aihint" style="margin:8px 0 0">本原型不會真的讀取照片。實際流程：AI 只判讀新舊程度與瑕疵並說明理由，金額由公式計算，店員複核後才確定。</p>
+</div>
+<div class="row"><label><input type="checkbox" id="sim">我不想上傳照片，改用簡易估價</label></div>
+<div class="note" id="simw" hidden>簡易估價精準度較低，區間放寬為 ± 25%（示範假設），店員複核後可能調整。</div>
+</div>
+
+<div class="card">
+<h2>確認物況與瑕疵</h2>
+<div class="chips" role="radiogroup" aria-label="物況">
+<label><input type="radio" name="c" value="近全新">近全新<small>無明顯使用痕跡</small></label>
+<label><input type="radio" name="c" value="良好">良好<small>輕微使用痕跡，結構完好</small></label>
+<label><input type="radio" name="c" value="普通" checked>普通<small>明顯使用痕跡，仍可使用</small></label>
+<label><input type="radio" name="c" value="需維修">需維修<small>背板缺失或結構損壞</small></label>
+</div>
+<div class="row">
+<label><input type="checkbox" id="sag" checked>層板下垂（微笑線）</label>
+<label><input type="checkbox" id="back" checked>背板缺失或空隙</label>
+<label><input type="checkbox" id="st">結構損壞或螺絲生鏽</label>
+<label>缺層板<input type="number" id="ms" min="0" max="6" value="0" aria-label="缺層板數"></label>
+</div>
+<div class="row"><label><input type="checkbox" id="safe" checked>頂端有防傾倒 L 型鐵件</label></div>
+</div>
+<button class="btn" data-go="1" type="button">看估價</button>
+</div>
+
+<div id="s1" hidden>
+<div class="card" aria-live="polite">
+<h2>估價結果</h2>
+<div id="blk" class="note" hidden>防傾倒配件不齊全，不納入轉售。補裝後可重新估價，或選擇捐贈、回收。</div>
+<div class="tag" style="margin-top:10px"><div class="rg">參考估價</div><div class="big" id="est">–</div><div class="rg" id="rng"></div></div>
+<div class="bar" aria-hidden="true"><i id="fill"></i></div>
+<div class="mut">估價占新品價的比例</div>
+<table style="margin-top:12px"><tbody id="bd"></tbody></table>
+<p class="mut" id="fm" style="margin:10px 0 0"></p>
+</div>
+<div class="row" style="margin:0 0 14px"><button class="btn ghost" data-go="0" type="button">回上一步</button><button class="btn" data-go="2" type="button">選擇去向</button></div>
+</div>
+
+<div id="s2" hidden>
+<div class="card"><h2>選擇處理方式</h2><div class="two" id="rt"></div><div id="rtn"></div><p class="mut" id="asm" style="margin:10px 0 0"></p></div>
+<div class="card" id="rw"></div>
+<div class="card" id="pk">
+<label style="display:flex;gap:8px;align-items:center"><input type="checkbox" id="pu"><b>預約到府取件（示意）</b></label>
+<div class="row" id="pd" hidden><label>時段<select id="pdt"><option>週一 11/16 上午</option><option>週二 11/17 下午</option><option>週三 11/18 上午</option></select></label></div>
+<p class="mut" style="margin:8px 0 0">問卷中搬運困難是最常見的困難（6/12）。不預約則自行送到台中店。</p>
+</div>
+<div class="row" style="margin:0 0 14px"><button class="btn ghost" data-go="1" type="button">回上一步</button><button class="btn" id="sub" type="button">送出申請（示範）</button></div>
+</div>
+
+<div id="s3" hidden>
+<div class="card" aria-live="polite">
+<h2>申請進度</h2>
+<div id="pg"></div>
+<ul class="tl" id="tl"></ul>
+<div class="row"><button class="btn ghost" id="adv" type="button" hidden>示範：推進到下一個狀態</button></div>
+</div>
+<div class="card" id="eco" hidden></div>
+</div>
+</section>
+
+<!-- 買家 -->
+<section id="buyer" hidden>
+<div class="card" id="lst"></div>
+
+<div class="card">
+<h2>先在你的牆面試擺</h2>
+<div class="row" style="margin-top:0">
+<label>牆寬（cm）<input type="number" id="ww" min="100" max="800" value="300"></label>
+<label>牆高（cm）<input type="number" id="wh" min="200" max="400" value="300"></label>
+</div>
+<div class="row"><button class="btn ghost" id="add" type="button">加一座</button><button class="btn ghost" id="rm" type="button">移除一座</button><label class="mut">牆面照片（選填）<input type="file" id="wp" accept="image/*"></label></div>
+<div style="margin-top:12px"><canvas id="cv" aria-label="牆面試擺圖，可左右拖曳書櫃"></canvas></div>
+<p class="mut" id="wn" style="margin:8px 0 0" role="status"></p>
+</div>
+
+<div class="card" id="cmp" aria-live="polite"></div>
+<p class="mut">買家常見疑慮：瑕疵或安全問題（7/13）、不確定尺寸放不放得進去（5/13）。試擺為依實際尺寸繪製的示意圖，牆面照片尚未校正比例。</p>
+</section>
+</main>
+
+<script>
+(function(){
+var P={get newp(){return S&&S.size===40?1490:2290},floor:.10,range:.15,rangeSim:.25,credit:.15,x:.70,fee:.10,ded:{ms:80,sag:100,back:150,st:200},
+ratio:{"近全新":.75,"良好":.62,"普通":.50,"需維修":.33},kg:38.28};
+var $=function(s){return document.querySelector(s)};
+var fmt=function(n){return n.toLocaleString("en-US")};
+var rd=function(v){return Math.round(v+1e-9)};
+var S={size:80,est:0,buy:0,credit:0,resale:0,blocked:false,cond:"普通",defs:[],sim:false,route:null,reward:"現金",stage:-1,sent:false,pick:""};
+var STEPS=["拍照與物況","估價","去向與回饋","進度"],cur=0;
+
+function calc(){
+var cond=document.querySelector("input[name=c]:checked").value;S.size=+document.querySelector("input[name=sz]:checked").value;W=S.size;$("#shf").style.width=(S.size/2)+"px";$("#itn").textContent="IKEA BILLY 書櫃 "+S.size+"×28×202 cm（白色）";$("#itp").textContent="新品價 NT$"+fmt(P.newp)+"（IKEA 台灣官網，2026/11/11）";
+var ms=Math.max(0,Math.min(6,+$("#ms").value||0));
+var defs=[];if(ms)defs.push("缺層板 "+ms+" 片");if($("#sag").checked)defs.push("層板下垂");if($("#back").checked)defs.push("背板缺失或空隙");if($("#st").checked)defs.push("結構損壞或生鏽");
+var d=(ms*P.ded.ms+($("#sag").checked?P.ded.sag:0)+($("#back").checked?P.ded.back:0)+($("#st").checked?P.ded.st:0))*P.newp/2290;
+var base=Math.round(P.newp*P.ratio[cond]);
+var est=Math.round(Math.max(P.newp*P.ratio[cond]-d,P.newp*P.floor));
+var r=$("#sim").checked?P.rangeSim:P.range;
+S.est=est;S.buy=rd(est*P.x);S.credit=rd(S.buy*(1+P.credit));S.resale=rd(est*(1-P.fee));S.blocked=!$("#safe").checked;S.cond=cond;S.defs=defs;S.sim=$("#sim").checked;
+$("#blk").hidden=!S.blocked;
+$("#est").textContent="NT$"+fmt(est);
+$("#rng").textContent="估價區間 NT$"+fmt(Math.round(est*(1-r)))+" 至 NT$"+fmt(Math.round(est*(1+r)));
+$("#fill").style.width=Math.round(est/P.newp*100)+"%";
+$("#bd").innerHTML="<tr><td>新品價</td><td>NT$"+fmt(P.newp)+"</td></tr><tr><td>物況「"+cond+"」× "+Math.round(P.ratio[cond]*100)+"%</td><td>NT$"+fmt(base)+"</td></tr><tr><td>瑕疵扣減</td><td>− NT$"+fmt(Math.round(d))+"</td></tr><tr class=\"t\"><td>估價</td><td>NT$"+fmt(est)+"</td></tr>";
+$("#fm").textContent="估價 = MAX（新品價 × 物況比例 − 瑕疵扣減，新品價 × "+Math.round(P.floor*100)+"%）；瑕疵扣減依尺寸等比例換算。最終金額以店員複核為準。";
+$("#phbox").hidden=S.sim;$("#simw").hidden=!S.sim;
+renderRoute();renderListing();renderCmp();
+}
+
+/* 去向 */
+function routes(){
+var rep=S.cond==="需維修",b=S.blocked,sellOK=!rep&&!b,buyOK=sellOK&&S.cond!=="普通";
+return[
+{k:"回購",t:"回購（快）",a:"NT$"+fmt(S.buy),d:buyOK?"IKEA 先買下，現金複核後付款，搬走就好；金額較低":(b?"防傾倒配件不齊全，不納入回購":rep?"需維修，不回購":"普通物況只做轉售，不由 IKEA 先買下"),on:buyOK},
+{k:"轉售",t:"轉售（多）",a:"NT$"+fmt(S.resale)+"（預估）",d:"成交後入帳，金額較高但要等；預估以估價為成交價，扣手續費 "+Math.round(P.fee*100)+"%（示範）",on:sellOK},
+{k:"維修",t:"送修",d:b?"補裝防傾倒鐵件後重新估價":"維修後重新估價",on:rep||b},
+{k:"捐贈",t:"捐贈或回收",d:"交由店內管道處理，無回饋金",on:true}];
+}
+function renderRoute(){
+var rs=routes(),ok=rs.filter(function(r){return r.on}).map(function(r){return r.k});
+if(ok.indexOf(S.route)<0)S.route=ok[0];
+$("#rt").innerHTML=rs.map(function(r){return"<label class=\"opt"+(r.on?"":" off")+"\"><input type=\"radio\" name=\"rt\" value=\""+r.k+"\""+(r.on?"":" disabled")+(S.route===r.k?" checked":"")+"><b>"+r.t+"</b>"+(r.a&&r.on?"<span class=\"amt\">"+r.a+"</span>":"")+"<small>"+r.d+"</small></label>"}).join("");
+var n="";
+if(S.blocked)n="防傾倒配件不齊全，不納入轉售。";
+else if(S.cond==="需維修")n="物況為「需維修」，不上架轉售，導向維修或回收。";
+else if(S.cond==="普通")n="物況為「普通」，只提供轉售，不由 IKEA 先買下舊品。";
+var tip=!n?"想快點處理選回購；想拿較多現金選轉售（多 NT$"+fmt(S.resale-S.buy)+"，但要等成交）。":"";
+$("#rtn").innerHTML=n?"<div class=\"note\">"+n+"</div>":"<div class=\"note good\">"+tip+"</div>";
+$("#asm").textContent="回購比例 X＝"+Math.round(P.x*100)+"%、轉售手續費 "+Math.round(P.fee*100)+"% 為示範假設，並非 IKEA 實際條件；最終金額以店員複核為準。";
+$("#asm").hidden=!(S.cond!=="需維修"&&!S.blocked);
+renderReward();
+document.querySelectorAll("input[name=rt]").forEach(function(e){e.onchange=function(){S.route=this.value;renderReward()}});
+}
+function renderReward(){
+var box=$("#rw"),buy=S.route==="回購";
+box.hidden=!buy;if(!buy)return;
+box.innerHTML="<h2>選擇回購的入帳方式</h2><div class=\"two\"><label class=\"opt\"><input type=\"radio\" name=\"rw\" value=\"現金\""+(S.reward==="現金"?" checked":"")+"><b>NT$"+fmt(S.buy)+"</b>現金<small>複核後付款</small></label><label class=\"opt\"><input type=\"radio\" name=\"rw\" value=\"購物金\""+(S.reward==="購物金"?" checked":"")+"><b>NT$"+fmt(S.credit)+"</b>IKEA 購物金<small>比回購現金多 "+Math.round(P.credit*100)+"%（示範），僅限 IKEA 使用</small></label></div>";
+box.querySelectorAll("input").forEach(function(e){e.onchange=function(){S.reward=this.value}});
+}
+function payRw(){return S.route==="回購"?S.reward:"現金"}
+function payAmt(){return S.route==="回購"?(S.reward==="現金"?S.buy:S.credit):S.resale}
+
+/* 進度 */
+function line(){
+var c=payRw()==="購物金"?"購物金入帳":"現金入帳";
+return{
+"回購":["已送出申請","店員複核照片與估價","確認最終金額","收件並"+c],
+"轉售":["已送出申請","店員複核照片與估價","上架到二手區","買家試擺與下單","完成交易",c],
+"維修":["已送出申請","店員複核","維修或補裝配件","重新估價並通知"],
+"捐贈":["已送出申請","安排收件","完成捐贈或回收"]}[S.route];
+}
+function kgt(){return S.size===40?"40 cm 款的官方重量尚待查證，暫不顯示避免廢棄量。":"每再用 1 件，約避免 "+P.kg+" kg 廢棄（本體淨重，IKEA 台灣官網）。"}
+function renderProg(){
+if(!S.sent){$("#pg").innerHTML="<p class=\"mut\">還沒有送出申請。完成估價與去向選擇後，這裡會顯示進度。</p>";$("#tl").innerHTML="";$("#adv").hidden=true;$("#eco").hidden=true;return}
+var L=line(),pay=S.route==="回購"||S.route==="轉售";
+var way=pay?S.route+"，"+payRw()+" NT$"+fmt(payAmt())+(S.route==="轉售"?"（預估，成交後入帳）":""):S.route;
+$("#pg").innerHTML="<p style=\"margin:0\">已送出（示範）：<b>"+way+"</b>，"+S.pick+"。店員複核照片後會確認最終金額。</p>";
+$("#tl").innerHTML=L.map(function(t,i){return"<li class=\""+(i<S.stage?"d":i===S.stage?"c":"")+"\">"+t+"</li>"}).join("");
+$("#adv").hidden=S.stage>=L.length-1;
+var e=$("#eco");e.hidden=S.route==="捐贈";
+e.innerHTML="<h2>再利用效益</h2><p style=\"margin:0\">"+kgt()+"</p><p class=\"mut\" style=\"margin:6px 0 0\">減碳量待查證係數出處後再顯示，目前不提供數字。</p>";
+}
+$("#adv").onclick=function(){if(S.stage<line().length-1){S.stage++;renderProg()}};
+$("#sub").onclick=function(){S.sent=true;S.stage=1;S.pick=$("#pu").checked?"到府取件 "+$("#pdt").value:"自行送到台中店";go(3)};
+
+/* 買家 */
+function renderListing(){
+var d=S.defs.length?S.defs.join("、"):"無明顯瑕疵";
+$("#lst").innerHTML="<h2>物況報告（示範上架）</h2><div class=\"item\"><div class=\"shelf\" aria-hidden=\"true\"></div><div><b>BILLY 書櫃 "+S.size+"×28×202 cm</b><div class=\"mut\">物況「"+S.cond+"」｜可見瑕疵：<span>"+d+"</span></div><div class=\"mut\">"+(S.blocked||S.cond==="需維修"?"此物況不上架轉售。以下以目前估價作示範。":"防傾倒鐵件齊全，店員已複核（示範）。")+"</div></div></div>";
+}
+function renderCmp(){
+var n=items.length,old=S.est*n,nw=P.newp*n;
+$("#cmp").innerHTML="<h2>二手與全新比較（"+n+" 座）</h2><table><tbody><tr><td>全新購買</td><td>NT$"+fmt(nw)+"</td></tr><tr><td>二手參考價（示範以目前估價代替）</td><td>NT$"+fmt(old)+"</td></tr><tr class=\"t\"><td>可省下</td><td>NT$"+fmt(Math.max(0,nw-old))+"</td></tr></tbody></table><p class=\"mut\" style=\"margin:8px 0 0\">"+(S.size===40?"":"每座再利用約避免 "+P.kg+" kg 廢棄。")+"</p>";
+}
+
+/* 導覽 */
+function go(i){
+cur=i;
+for(var k=0;k<4;k++)$("#s"+k).hidden=k!==i;
+$("#stp").innerHTML=STEPS.map(function(t,k){return"<li><button type=\"button\" data-go=\""+k+"\""+(k===i?" aria-current=\"step\"":"")+(k<i?" class=\"done\"":"")+">"+t+"</button></li>"}).join("");
+$("#stp").querySelectorAll("button").forEach(function(b){b.onclick=function(){go(+b.dataset.go)}});
+if(i===3)renderProg();
+window.scrollTo(0,0);
+}
+document.querySelectorAll("[data-go]").forEach(function(b){b.onclick=function(){go(+b.dataset.go)}});
+function role(s){
+$("#seller").hidden=!s;$("#buyer").hidden=s;
+$("#rs").setAttribute("aria-selected",s);$("#rb").setAttribute("aria-selected",!s);
+if(!s)draw();window.scrollTo(0,0);
+}
+$("#rs").onclick=function(){role(true)};$("#rb").onclick=function(){role(false)};
+
+/* 輸入 */
+document.querySelectorAll("input[name=c],input[name=sz],#sag,#back,#st,#ms,#safe,#sim").forEach(function(e){e.addEventListener("input",calc);e.addEventListener("change",calc)});
+$("#ai").onclick=function(){
+document.querySelector("input[name=c][value=普通]").checked=true;$("#sag").checked=true;$("#back").checked=true;$("#st").checked=false;$("#ms").value=0;
+var w=$("#aiw");w.hidden=false;w.textContent="AI 初判（示範文字）：中段層板略微下垂、背板右下角有空隙，整體物況為「普通」。請你確認，店員會再複核。";calc()};
+$("#ph").onchange=function(){var f=this.files[0];if(!f)return;var im=$("#pv");im.src=URL.createObjectURL(f);im.hidden=false;im.alt="已上傳的書櫃照片"};
+$("#pu").onchange=function(){$("#pd").hidden=!this.checked};
+
+/* 試擺 */
+var items=[{x:20}],cv=$("#cv"),cx=cv.getContext("2d"),W=80,H=202,sc=1,drag=null,bg=null;
+function wall(){return{w:Math.max(100,+$("#ww").value||300),h:Math.max(200,+$("#wh").value||300)}}
+function col(n){return getComputedStyle(document.documentElement).getPropertyValue(n).trim()}
+function draw(){
+var w=wall().w,h=wall().h,cw=cv.clientWidth;if(!cw)return;sc=cw/w;var ch=Math.round(h*sc),d=window.devicePixelRatio||1;
+cv.width=cw*d;cv.height=ch*d;cv.style.height=ch+"px";cx.setTransform(d,0,0,d,0,0);
+cx.fillStyle=col("--soft");cx.fillRect(0,0,cw,ch);
+if(bg){cx.globalAlpha=.55;cx.drawImage(bg,0,0,cw,ch);cx.globalAlpha=1}
+cx.fillStyle=col("--line");cx.fillRect(0,ch-6,cw,6);
+var fy=ch-6,y170=fy-170*sc;
+cx.strokeStyle=col("--mut");cx.lineWidth=1;cx.setLineDash([5,4]);cx.beginPath();cx.moveTo(0,y170);cx.lineTo(cw,y170);cx.stroke();cx.setLineDash([]);
+cx.fillStyle=col("--mut");cx.font="11px sans-serif";cx.fillText("170 cm",4,y170-4);
+items.forEach(function(it){
+it.x=Math.max(0,Math.min(w-W,it.x));
+var x=it.x*sc,bw=W*sc,bh=H*sc,top=fy-bh;
+cx.fillStyle=col("--wood");cx.fillRect(x,top,bw,bh);
+cx.strokeStyle=col("--wood2");cx.lineWidth=2;cx.strokeRect(x,top,bw,bh);
+for(var k=1;k<6;k++){var yy=top+bh*k/6;cx.beginPath();cx.moveTo(x,yy);cx.lineTo(x+bw,yy);cx.stroke()}
+cx.lineWidth=1;cx.fillStyle=col("--ink");cx.font="12px sans-serif";cx.fillText(W+"×202 cm",x+4,Math.max(14,top-5));
+});
+var over=H>h?"櫃高 202 cm 超過牆高，無法直立放入。":(items.length*W>w?"牆寬不足，書櫃會重疊。":(w-items.length*W<0?"":"可放入。剩餘牆寬約 "+Math.round(w-items.length*W)+" cm（以並排計）。"));
+$("#wn").textContent=(over?over+" ":"")+"拖曳書櫃左右移動。虛線為成人身高 170 cm。";
+}
+function px(e){var r=cv.getBoundingClientRect();return (e.clientX-r.left)/sc}
+cv.addEventListener("pointerdown",function(e){var p=px(e);for(var i=items.length-1;i>=0;i--){if(p>=items[i].x&&p<=items[i].x+W){drag={i:i,o:p-items[i].x};cv.setPointerCapture(e.pointerId);cv.style.cursor="grabbing";return}}});
+cv.addEventListener("pointermove",function(e){if(!drag)return;items[drag.i].x=px(e)-drag.o;draw()});
+cv.addEventListener("pointerup",function(){drag=null;cv.style.cursor="grab"});
+$("#add").onclick=function(){if(items.length<4){items.push({x:items[items.length-1].x+W+2});draw();renderCmp()}};
+$("#rm").onclick=function(){if(items.length>1){items.pop();draw();renderCmp()}};
+$("#wp").onchange=function(){var f=this.files[0];if(!f)return;var im=new Image();im.onload=function(){bg=im;draw()};im.src=URL.createObjectURL(f)};
+$("#ww").oninput=draw;$("#wh").oninput=draw;
+window.addEventListener("resize",draw);
+window.matchMedia("(prefers-color-scheme:dark)").addEventListener("change",draw);
+
+var SM=null,files=[],demoFn=$("#ai").onclick,busy=false;
+var AIP='你是 IKEA 二手家具複核助手。使用者要轉售一座 IKEA BILLY 書櫃，附上 {N} 張照片（依序為第 1 至第 {N} 張）。請只根據照片中看得到的內容判讀，看不到的不要猜，也不要估價。\n物況分級：近全新（無明顯使用痕跡）、良好（輕微使用痕跡、結構完好）、普通（明顯使用痕跡但仍可使用）、需維修（背板缺失或結構損壞）。\n只回覆一個 JSON 物件：{"isBilly":布林,"cond":"近全新|良好|普通|需維修","sag":層板是否下垂（微笑線）的布林,"back":背板是否缺失或有空隙的布林,"structure":是否有板材破損、螺絲生鏽或結構鬆動的布林,"missingShelves":缺少的層板數（看不出來填 0）,"bracket":"有|無|看不到"（頂端防傾倒 L 型鐵件）,"confidence":"高|中|低","reasons":[每項 30 字內，註明依據第幾張照片],"unseen":[照片看不到、需店員確認的項目]}。若照片不是書櫃或太模糊，isBilly 填 false，並在 reasons 說明。';
+(async function(){try{var N="此網站版未連接 AI 判讀（AI 判讀僅在 claude.ai 內運作，完整示範請見操作影片），下方按鈕為示範模式；估價、處理方式與試擺皆可正常操作。";var s=window.claude&&claude.use?await claude.use("sample"):null;if(!s){$("#aihint").textContent=N;return}var l=await s.limits().catch(function(){return null});if(!l||!l.images){$("#aihint").textContent="這個環境不支援把照片傳給 AI，下方按鈕只是示範。";return}SM=s;SM.mx=Math.min(4,l.images.maxCount||4);$("#ph").multiple=true;if(l.images.mediaTypes)$("#ph").accept=l.images.mediaTypes.join(",");$("#ai").textContent="AI 判讀照片";$("#aihint").textContent="照片只在你按下「AI 判讀照片」時送給 Claude（最多 "+SM.mx+" 張），用來判讀物況與瑕疵；金額仍由公式計算，店員複核後才確定。"}catch(e){}})();
+$("#ph").addEventListener("change",function(){files=Array.prototype.slice.call(this.files||[],0,4)});
+function aiMsg(t,cls){var w=$("#aiw");w.hidden=false;w.className="note"+(cls?" "+cls:"");w.textContent=t;return w}
+function aiShow(r){var w=aiMsg("",r.ok?"good":"");var h=document.createElement("b");h.textContent=r.title;w.appendChild(h);
+[["依據",r.reasons],["照片看不到，請自行確認或交給店員",r.unseen]].forEach(function(p){if(!p[1]||!p[1].length)return;var d=document.createElement("div");d.style.marginTop="6px";d.textContent=p[0]+"：";var u=document.createElement("ul");u.style.margin="4px 0 0";p[1].forEach(function(x){var li=document.createElement("li");li.textContent=String(x);u.appendChild(li)});d.appendChild(u);w.appendChild(d)})}
+$("#ai").onclick=async function(){
+if(!SM){demoFn.call(this);return}
+if(busy)return;
+if(!files.length){aiMsg("請先選擇照片（可選多張）。");return}
+busy=true;var b=this;b.disabled=true;aiMsg("AI 判讀中，通常需要數十秒。第一次使用會先請你允許使用 Claude。");
+try{
+var r=await SM.json(AIP.split("{N}").join(files.length),{images:files.slice(0,SM.mx),modelTier:"default"});
+var conds=["近全新","良好","普通","需維修"];
+if(!r||r.isBilly===false||conds.indexOf(r.cond)<0){aiShow({ok:false,title:"這看起來不是 BILLY 書櫃，或照片看不清楚，未帶入結果。",reasons:r&&r.reasons});return}
+document.querySelector('input[name=c][value="'+r.cond+'"]').checked=true;
+$("#sag").checked=!!r.sag;$("#back").checked=!!r.back;$("#st").checked=!!r.structure;
+$("#ms").value=Math.max(0,Math.min(6,Math.round(+r.missingShelves||0)));
+if(r.bracket==="有")$("#safe").checked=true;else if(r.bracket==="無")$("#safe").checked=false;
+calc();
+var un=(r.unseen||[]).slice();if(r.bracket==="看不到")un.push("頂端防傾倒 L 型鐵件（目前沿用你的勾選）");
+aiShow({ok:true,title:"AI 判讀（Claude）：物況「"+r.cond+"」，信心："+(r.confidence||"未提供")+"。請確認下方選項，不對就自己改。",reasons:r.reasons,unseen:un});
+}catch(e){
+var c=e&&e.code,m="AI 暫時無法使用，請手動選擇物況與瑕疵。";
+if(c==="cancelled")m="已取消。";
+else if(c==="rate_limited")m="使用次數已達上限，請稍後再試。";
+else if(c==="image_rejected")m="照片格式或大小不符，請換 JPEG、PNG 或 WebP 的照片。";
+else if(c==="invalid_json"||c==="empty_completion")m="AI 回覆格式有誤，請再按一次，或手動選擇。";
+else if(c==="not_granted"||c==="sampling_disabled"||c==="capability_disabled"||c==="not_declared"||c==="images_unavailable"){m="這個環境無法使用 AI 判讀，請手動選擇物況與瑕疵。";SM=null;$("#ai").textContent="示範：帶入 AI 初判結果"}
+aiMsg(m);
+}finally{busy=false;b.disabled=false}
+};
+go(0);calc();
+})();
+</script>
+</body>
+</html>
